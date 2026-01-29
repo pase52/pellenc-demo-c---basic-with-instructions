@@ -1,5 +1,6 @@
 #include "converters/temperature.h"
 #include "converters/distance.h"
+#include "converters/weight.h"
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -11,7 +12,8 @@ namespace
 	enum class AppTab
 	{
 		temperature,
-		distance
+		distance,
+		weight
 	};
 
 	struct TemperatureState
@@ -26,6 +28,15 @@ namespace
 	struct DistanceState
 	{
 		float input_value = 100.0f;
+		int source_unit = 0;
+		int target_unit = 1;
+		double result = 0.0;
+		bool needs_update = true;
+	};
+
+	struct WeightState
+	{
+		float input_value = 1.0f;
 		int source_unit = 0;
 		int target_unit = 1;
 		double result = 0.0;
@@ -49,6 +60,18 @@ namespace
 		DistanceUnit from = static_cast<DistanceUnit>(state.source_unit);
 		DistanceUnit to = static_cast<DistanceUnit>(state.target_unit);
 		state.result = DistanceConversion::convertDistance(
+			static_cast<double>(state.input_value),
+			from,
+			to
+		);
+		state.needs_update = false;
+	}
+
+	void updateWeightConversion(WeightState& state)
+	{
+		WeightUnit from = static_cast<WeightUnit>(state.source_unit);
+		WeightUnit to = static_cast<WeightUnit>(state.target_unit);
+		state.result = WeightConversion::convertWeight(
 			static_cast<double>(state.input_value),
 			from,
 			to
@@ -155,6 +178,56 @@ namespace
 		);
 		ImGui::PopStyleColor();
 	}
+
+	void renderWeightTab(WeightState& state)
+	{
+		ImGui::Spacing();
+		ImGui::Text("Weight Converter");
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		const char* weight_units[] = {"Kilogram", "Pound", "Ounce"};
+		const char* weight_symbols[] = {"kg", "lbs", "oz"};
+
+		ImGui::Text("Input Value:");
+		if (ImGui::InputFloat("##weight_input", &state.input_value, 0.1f, 1.0f, "%.2f"))
+		{
+			state.needs_update = true;
+		}
+
+		ImGui::Spacing();
+		ImGui::Text("From:");
+		if (ImGui::Combo("##weight_from", &state.source_unit, weight_units, 3))
+		{
+			state.needs_update = true;
+		}
+
+		ImGui::Spacing();
+		ImGui::Text("To:");
+		if (ImGui::Combo("##weight_to", &state.target_unit, weight_units, 3))
+		{
+			state.needs_update = true;
+		}
+
+		if (state.needs_update)
+		{
+			updateWeightConversion(state);
+		}
+
+		ImGui::Spacing();
+		ImGui::Separator();
+		ImGui::Spacing();
+
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.2f, 0.8f, 0.2f, 1.0f));
+		ImGui::Text("Result:");
+		ImGui::Text("%.2f %s = %.2f %s",
+			state.input_value,
+			weight_symbols[state.source_unit],
+			state.result,
+			weight_symbols[state.target_unit]
+		);
+		ImGui::PopStyleColor();
+	}
 }
 
 static void glfwErrorCallback(int error, const char* description)
@@ -196,6 +269,7 @@ int main(int, char**)
 	AppTab current_tab = AppTab::temperature;
 	TemperatureState temp_state;
 	DistanceState dist_state;
+	WeightState weight_state;
 
 	const ImVec4 clear_color = ImVec4(0.15f, 0.15f, 0.15f, 1.00f);
 
@@ -240,6 +314,13 @@ int main(int, char**)
 				{
 					current_tab = AppTab::distance;
 					renderDistanceTab(dist_state);
+					ImGui::EndTabItem();
+				}
+
+				if (ImGui::BeginTabItem("Weight"))
+				{
+					current_tab = AppTab::weight;
+					renderWeightTab(weight_state);
 					ImGui::EndTabItem();
 				}
 
