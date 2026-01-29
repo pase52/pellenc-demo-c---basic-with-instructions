@@ -1,13 +1,13 @@
-#ifndef CONVERTERS_WEIGHT_H_
-#define CONVERTERS_WEIGHT_H_
+#ifndef WEIGHT_H_
+#define WEIGHT_H_
 
 #include <string>
 
 enum class WeightUnit
 {
-	kilogram,
-	pound,
-	ounce
+	Kilogram,
+	Pound,
+	Ounce
 };
 
 namespace WeightConversion

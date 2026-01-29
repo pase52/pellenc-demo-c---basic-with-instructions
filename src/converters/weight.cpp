@@ -10,9 +10,9 @@ namespace /* private */
 	std::string getWeightUnitSign(WeightUnit unit)
 	{
 		std::unordered_map<WeightUnit, std::string> unitSigns = {
-			{WeightUnit::kilogram, "kg"},
-			{WeightUnit::pound, "lbs"},
-			{WeightUnit::ounce, "oz"}
+			{WeightUnit::Kilogram, "kg"},
+			{WeightUnit::Pound, "lbs"},
+			{WeightUnit::Ounce, "oz"}
 		};
 
 		return unitSigns.at(unit);
@@ -53,13 +53,13 @@ namespace WeightConversion
 		switch (choice)
 		{
 		case 1:
-			return WeightUnit::kilogram;
+			return WeightUnit::Kilogram;
 		case 2:
-			return WeightUnit::pound;
+			return WeightUnit::Pound;
 		case 3:
-			return WeightUnit::ounce;
+			return WeightUnit::Ounce;
 		default:
-			return WeightUnit::kilogram;
+			return WeightUnit::Kilogram;
 		}
 	}
 
@@ -71,21 +71,21 @@ namespace WeightConversion
 		}
 
 		// Convert everything to Kilograms first
-		if (from == WeightUnit::pound)
+		if (from == WeightUnit::Pound)
 		{
 			value = value / KG_TO_LBS;
 		}
-		else if (from == WeightUnit::ounce)
+		else if (from == WeightUnit::Ounce)
 		{
 			value = value / (KG_TO_LBS * LB_TO_OZ);
 		}
 
 		// Then convert to the target unit
-		if (to == WeightUnit::pound)
+		if (to == WeightUnit::Pound)
 		{
 			value = value * KG_TO_LBS;
 		}
-		else if (to == WeightUnit::ounce)
+		else if (to == WeightUnit::Ounce)
 		{
 			value = value * KG_TO_LBS * LB_TO_OZ;
 		}
