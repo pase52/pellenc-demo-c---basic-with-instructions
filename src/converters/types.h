@@ -4,7 +4,8 @@
 enum class ConversionType
 {
   Temperature,
-  Distance
+  Distance,
+  Weight
 };
 
 #endif

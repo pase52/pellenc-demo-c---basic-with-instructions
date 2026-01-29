@@ -5,5 +5,7 @@ add_library(
   distance.h
   temperature.cpp
   temperature.h
+  weight.cpp
+  weight.h
   types.h
 )

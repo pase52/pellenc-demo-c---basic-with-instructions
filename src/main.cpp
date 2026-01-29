@@ -1,6 +1,7 @@
 #include "converters/types.h"
 #include "converters/temperature.h"
 #include "converters/distance.h"
+#include "converters/weight.h"
 #include <iostream>
 #include <array>
 #include <cstdlib>
@@ -25,9 +26,10 @@ void displayHeader()
 ConversionType getConversionType()
 {
   int choice;
-  std::array<ConversionType, 2> conversionTypes = {
+  std::array<ConversionType, 3> conversionTypes = {
       ConversionType::Temperature,
-      ConversionType::Distance};
+      ConversionType::Distance,
+      ConversionType::Weight};
 
   while (true)
   {
@@ -36,6 +38,7 @@ ConversionType getConversionType()
     printf("Select type of conversion:\n\n");
     printf("  [1] Temperature Conversion\n");
     printf("  [2] Distance Conversion\n");
+    printf("  [3] Weight Conversion\n");
     printf("  [0] Exit\n\n");
     printf("Enter your choice: ");
     
@@ -85,6 +88,11 @@ int main()
     case ConversionType::Distance:
       {
         DistanceConversion::startFlow();
+        break;
+      }
+    case ConversionType::Weight:
+      {
+        WeightConversion::startFlow();
         break;
       }
     }
