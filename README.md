@@ -2,6 +2,14 @@
 
 These exercises demonstrate usage of GitHub Copilot for C++. The app is a simple CLI Tool that allows users to convert in between different units.
 
+## Features
+
+OctoConverter supports the following conversion types:
+
+- **Temperature**: Convert between Celsius, Fahrenheit, and Kelvin
+- **Distance**: Convert between Meters, Feet, and Yards
+- **Weight**: Convert between Kilograms, Pounds, and Ounces
+
 ## Getting Started
 
 ### Build
@@ -31,7 +39,7 @@ cmake --build build
 
 Use GitHub Copilot to assist with the following tasks:
 
-- [ ] Finish the `Distance` Conversion Class and include it in the `main.cpp` (optionally, first implement tests and do a TDD approach)
-- [ ] Add some Tests for the `Distance::convertDistance`
+- [x] Finish the `Distance` Conversion Class and include it in the `main.cpp` (optionally, first implement tests and do a TDD approach)
+- [x] Add some Tests for the `Distance::convertDistance`
 - [ ] Refactor all `printf` and `scanf` and use `std::cout` and `std::cin` instead
-- [ ] Add a new Conversion Class for `Weight` to convert in between Kilos and Pounds
+- [x] Add a new Conversion Class for `Weight` to convert in between Kilos, Pounds, and Ounces
